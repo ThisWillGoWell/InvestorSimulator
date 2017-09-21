@@ -4,7 +4,7 @@ import time
 
 from StockServer.database_manager import DatabaseManager
 import random
-from utils import *
+from StockServer.utils import *
 import json
 
 logging.basicConfig(level=logging.DEBUG)
@@ -140,10 +140,10 @@ class StockManager:
 
 if __name__ == '__main__':
     db = DatabaseManager()
-    print db.make_stock(StockManager.generate_stock('Grandmas Life', 'GWEN'), overwrite=True)
-    print db.make_stock(StockManager.generate_stock('GOLF GOLF GOLF', 'GOLF'), overwrite=True)
-    print db.make_stock(StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True)
-    print db.make_stock(StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True)
+    print(db.make_stock(StockManager.generate_stock('Grandmas Life', 'GWEN'), overwrite=True))
+    print(db.make_stock(StockManager.generate_stock('GOLF GOLF GOLF', 'GOLF'), overwrite=True))
+    print(db.make_stock(StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True))
+    print(db.make_stock(StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True))
     sm = StockManager(db)
     while True:
         pass

@@ -8,9 +8,9 @@ from StockServer import stock_manager
 from StockServer.database_manager import DatabaseManager
 from StockServer.portfolio_manager import PortfolioManager
 from StockServer.stock_manager import StockManager
-from login_manager import Gatekeeper, User
+from StockServer.login_manager import Gatekeeper, User, HeatBeatManger
 from flask import Flask, request, redirect, abort, Response
-from utils import *
+from StockServer.utils import *
 
 
 def authenticated_only(f):
@@ -35,20 +35,22 @@ class App:
     root_dir = os.path.dirname(os.getcwd())
     socket_io = SocketIO(app)
 
+
     db = DatabaseManager()
 
     # make some stocks
-    print db.make_stock(stock_manager.StockManager.generate_stock('Gramdma', 'GWEN'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('mistwood', 'GOLF'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True)
+    print(db.make_stock(stock_manager.StockManager.generate_stock('Gramdma', 'GWEN'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('mistwood', 'GOLF'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True))
 
-    print db.make_portfolio(PortfolioManager.make_portfolio('Pooplord', 'POOP'), overwrite=True)
-    print db.make_portfolio(PortfolioManager.make_portfolio('Tammyc', 'GAREN'), overwrite=True)
-    print db.make_portfolio(PortfolioManager.make_portfolio('$ara', '!@#$'), overwrite=True)
+    print(db.make_portfolio(PortfolioManager.make_portfolio('Pooplord', 'POOP'), overwrite=True))
+    print(db.make_portfolio(PortfolioManager.make_portfolio('Tammyc', 'GAREN'), overwrite=True))
+    print(db.make_portfolio(PortfolioManager.make_portfolio('$ara', '!@#$'), overwrite=True))
 
     sm = StockManager(db=db)
     pm = PortfolioManager(sm=sm, db=db)
+    hm = HeatBeatManger()
 
 
 
@@ -70,6 +72,17 @@ class App:
     @authenticated_only
     def event(data):
         print(data)
+
+    @staticmethod
+    def heatbeat_ping():
+        emit("heatbeat")
+
+
+    @staticmethod
+    @socket_io.on("heartbeat")
+    @authenticated_only
+    def heatbeat():
+        App.hm.recived_pong(current_user.get_id())
 
     @staticmethod
     @app.route("/")
@@ -121,6 +134,7 @@ class App:
     def __init__(self):
         self.app = App.app
         App.sm.set_update_call(self.update)
+        App.hm.set_update_call(self.update)
         App.socket_io.run(App.app)
 
 

@@ -1,6 +1,6 @@
 from threading import Lock
 from utils import *
-from StockServer.utils import success
+from StockServer.utils import *
 import json
 
 buy_action_string = 'buy'
@@ -132,22 +132,22 @@ if __name__ == '__main__':
     db = database_manager.DatabaseManager()
 
     # make some stocks
-    print db.make_stock(stock_manager.StockManager.generate_stock('Gramdma', 'GWEN'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('mistwood', 'GOLF'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True)
-    print db.make_stock(stock_manager.StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True)
+    print(db.make_stock(stock_manager.StockManager.generate_stock('Gramdma', 'GWEN'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('mistwood', 'GOLF'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('DinoPark', 'PARK'), overwrite=True))
+    print(db.make_stock(stock_manager.StockManager.generate_stock('PersonalBusiness', 'DMI'), overwrite=True))
 
-    print db.make_portfolio(PortfolioManager.make_portfolio('Pooplord', 'POOP'), overwrite=True)
-    print db.make_portfolio(PortfolioManager.make_portfolio('Tammyc', 'GAREN'), overwrite=True)
-    print db.make_portfolio(PortfolioManager.make_portfolio('$ara', '!@#$'), overwrite=True)
+    print(db.make_portfolio(PortfolioManager.make_portfolio('Pooplord', 'POOP'), overwrite=True))
+    print(db.make_portfolio(PortfolioManager.make_portfolio('Tammyc', 'GAREN'), overwrite=True))
+    print(db.make_portfolio(PortfolioManager.make_portfolio('$ara', '!@#$'), overwrite=True))
 
     # Stat the managers
     sm = stock_manager.StockManager(database=db)
     pm = PortfolioManager(db=db, sm=sm)
 
-    print sm.get_stocks_json()
+    print(sm.get_stocks_json())
 
     pm.trade('Pooplord', buy_action_string,'GWEN',5)
 
-    print sm.get_stocks_json()
+    print(sm.get_stocks_json())
     # @todo write this test, see why stock_id not being changed

@@ -1,8 +1,11 @@
 
 from flask_login import LoginManager, login_manager, UserMixin, login_user, login_required, logout_user, current_user
-
+from threading import Thread, Lock
 from StockServer.database_manager import DatabaseManager
-from utils import  *
+from StockServer.utils import *
+import time
+import json
+
 
 
 class Gatekeeper:
@@ -56,6 +59,58 @@ class User(UserMixin):
 
     def __repr__(self):
         return self.id
+
+class HeatBeatManger():
+    """
+    Class responsible for manaeing the heartbeat
+    """
+
+    @staticmethod
+    def standard_update(data):
+        print(data)
+
+    def __init__(self):
+        self.heatBeatTimer = self.HeatBeatTimer(self)
+        self.active_clients = {}
+        self.active_client_lock = Lock()
+        self.update_notify = HeatBeatManger.standard_update
+
+    def active_list_json(self):
+        return
+
+    def set_update_call(self, new_function):
+        self.update_notify = new_function
+
+    def recieved_pong(self, client_id):
+        self.lock_active_clients()
+        self.active_clients[client_id] = time.time()
+        self.unlock_active_clients()
+
+    def lock_active_clients(self):
+        self.active_client_lock.acquire()
+
+    def unlock_active_clients(self):
+        self.active_client_lock.release()
+
+    class HeatBeatTimer(Thread):
+        update_timeout = .250
+        active_timeout = 1
+
+        def __init__(self, heart_beat_manager):
+            Thread.__init__(self)
+            self.hm = heart_beat_manager
+
+        def run(self):
+            while True:
+                self.hm.lock_active_clients()
+                for client in self.hm.active_clients:
+                    if time.time() - self.hm.active_clients[client] > self.hm.active_timeout:
+                        del(self.hm.active_clients[client])
+                        self.hm.update_notify(self.)
+                self.hm.unlock_active_clients()
+                time.sleep(self.update_timeout)
+
+
 
 
 if __name__ == '__main__':
