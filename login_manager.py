@@ -106,7 +106,7 @@ class HeatBeatManger():
                 for client in self.hm.active_clients:
                     if time.time() - self.hm.active_clients[client] > self.hm.active_timeout:
                         del(self.hm.active_clients[client])
-                        self.hm.update_notify(self.)
+                        #self.hm.update_notify(self.)
                 self.hm.unlock_active_clients()
                 time.sleep(self.update_timeout)
 
@@ -123,6 +123,7 @@ if __name__ == '__main__':
         SECRET_KEY='secret_xxx'
     )
     gateKeeper = Gatekeeper(app=app)
+
 
     # some protected url
     @app.route('/')
