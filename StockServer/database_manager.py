@@ -1,6 +1,6 @@
 
 from pymongo import MongoClient
-from utils import *
+from StockServer.invest_utils import *
 
 
 class DatabaseManager:

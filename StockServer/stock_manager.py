@@ -4,7 +4,7 @@ import time
 
 from StockServer.database_manager import DatabaseManager
 import random
-from StockServer.utils import *
+from StockServer.invest_utils import *
 import json
 
 logging.basicConfig(level=logging.DEBUG)

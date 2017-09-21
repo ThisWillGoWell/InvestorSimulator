@@ -10,7 +10,7 @@ from StockServer.portfolio_manager import PortfolioManager
 from StockServer.stock_manager import StockManager
 from StockServer.login_manager import Gatekeeper, User, HeatBeatManger
 from flask import Flask, request, redirect, abort, Response
-from StockServer.utils import *
+from StockServer.invest_utils import *
 
 
 def authenticated_only(f):

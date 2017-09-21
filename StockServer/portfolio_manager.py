@@ -1,6 +1,5 @@
 from threading import Lock
-from utils import *
-from StockServer.utils import *
+from StockServer.invest_utils import *
 import json
 
 buy_action_string = 'buy'
