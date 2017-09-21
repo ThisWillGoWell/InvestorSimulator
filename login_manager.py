@@ -124,7 +124,6 @@ if __name__ == '__main__':
     )
     gateKeeper = Gatekeeper(app=app)
 
-
     # some protected url
     @app.route('/')
     @login_required
